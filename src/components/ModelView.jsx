@@ -3,13 +3,14 @@ import React, { Suspense } from "react";
 import Lights from "./Lights";
 import IPhone from './IPhone'
 import * as THREE from 'three'
+import Loader from "./Loader";
 
 const ModelView = ({
   index,
   groupRef,
   gsapType,
   controlRef,
-  setRotationSize,
+  setRotationState,
   size,
   item,
 }) => {
@@ -17,9 +18,9 @@ const ModelView = ({
     <View
       index={index}
       id={gsapType}
-      className={`w-full h-full ${
-        index === 2
-      } ? 'right-[-100%] : ''`}
+      className={`w-full h-full absolute ${
+        index === 2 ? 'right-[-100%]' : ''
+      } `}
     >
         <ambientLight intensity={0.3} />
 
@@ -34,11 +35,11 @@ const ModelView = ({
             enablePan={false}
             rotateSpeed={0.4}
             target={new THREE.Vector3(0, 0, 0)}
-            onEnd={() => setRotationSize(controlRef.current.getAzimuthaAngle())}
+            onEnd={() => setRotationState(controlRef.current.getAzimuthalAngle())}
         />
 
         <group ref={groupRef} name={`${index === 1} ? 'small' : 'large'`} position={[0, 0, 0]}>
-            <Suspense fallback={<Html><div>Loading</div></Html>}>
+            <Suspense fallback={<Loader />}>
                 <IPhone 
                     scale={index === 1 ? [15, 15, 15] : [17, 17, 17]}
                     item={item}
